@@ -8,6 +8,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseURL: process.env.BASE_URL,
+      appwriteProjectId: process.env.NUXT_APPWRITE_PROJECT_ID,
+      appwriteBucketId: process.env.NUXT_APPWRITE_BUCKET_ID,
+      appwriteAPIEndpoint: process.env.NUXT_APPWRITE_API_ENDPOINT,
     },
   },
   ...{

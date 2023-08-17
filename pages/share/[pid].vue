@@ -2,7 +2,7 @@
   <div class="py-[10%] px-[15%] w-full h-screen">
     <div class="flex flex-col w-full h-full">
       <div class="x-card !max-w-full"> 
-        <h3> Obisike's Slideshows </h3>
+        <h3> {{name}}'s Slideshows </h3>
       </div>
       <div class="pb-20"> 
         <swiper
@@ -30,16 +30,31 @@
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { EffectCards, Autoplay } from "swiper/modules";
+import { appwriteStorage, convertToURL } from "../../utils";
 
 const modules = [Autoplay, EffectCards];
 
-const images = ref<string[]>([
-  'https://swiperjs.com/demos/images/nature-1.jpg',
-  'https://swiperjs.com/demos/images/nature-2.jpg',
-  'https://swiperjs.com/demos/images/nature-3.jpg',
-  'https://swiperjs.com/demos/images/nature-4.jpg',
-  'https://swiperjs.com/demos/images/nature-5.jpg',
-]);
+const config = useRuntimeConfig();
+const route = useRoute();
+
+const name = computed(() => (route.params.pid as string).split('-')[0])
+
+const images = ref<string[]>([]);
+
+onMounted(() => {
+  getImages()
+})
+
+async function getImages() {
+  const storage = appwriteStorage();
+  const keys = getFileIdsFromPreviewKey(route.params.pid as string);
+  if (!keys) return;
+
+  keys.forEach(k => {
+    const url = storage.getFileView(config.public.appwriteBucketId, k)
+    images.value.push(url.toString())
+  })
+}
 
 </script>
 <style scoped>

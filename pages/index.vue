@@ -6,15 +6,15 @@
       <div class="mt-2">
         <input
           type="text"
-          v-model="store.name"
           class="w-full"
+          v-model="store.name"
           placeholder="Name: e.g. Obisike Treasure"
         />
       </div>
       <div class="mt-2">
         <input
           type="button"
-          @click="create"
+          @click="navigateTo('/gallery')"
           :disabled="!!!store.name"
           class="w-full bg-orange-400 disabled:bg-orange-200 disabled:text-gray-600"
           value="Create"
@@ -25,12 +25,5 @@
 </template>
 
 <script setup lang="ts">
-import { useSessionStorage } from "@vueuse/core";
-import { Config } from "../utils";
-
-const store = useSessionStorage(Config.STORE_NAME, { name: "" });
-
-async function create() {
-  navigateTo("/gallery");
-}
+const store = useAppSession();
 </script>
